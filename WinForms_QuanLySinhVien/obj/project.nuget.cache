@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "gnqXTZ91jY7wiE++6UOykHN8+M3sh6Yrfvo+YirtS8HIO0tQg+kTUsI+TiVDXuU+KDuZzr/2bLoEugpLZWo5IQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Loki\\source\\repos\\WinForms_QuanLySinhVien\\WinForms_QuanLySinhVien\\WinForms_QuanLySinhVien.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Loki\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.17\\microsoft.netcore.app.host.win-x64.5.0.17.nupkg.sha512"
+  ],
+  "logs": []
+}
