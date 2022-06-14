@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WinForms_QuanLySinhVien.Logics;
 
 namespace WinForms_QuanLySinhVien
 {
@@ -16,41 +17,89 @@ namespace WinForms_QuanLySinhVien
         public Form1()
         {
             InitializeComponent();
-            dateTimePicker1.Value = DateTime.Parse("1/1/2004");
-            comboBox1.SelectedIndex = 0;
-            
         }
 
-        private void button1_Click(object sender, EventArgs e)
+
+        private Student GetStudentInfo()
         {
-            
-
-
-        }
-
-        public void loadStudent()
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("ID");
-            dt.Columns.Add("Name");
-            dt.Columns.Add("Gender");
-            dt.Columns.Add("Major");
-            dt.Columns.Add("DOB");
-            dt.Columns.Add("Schoolarship");
-            dt.Columns.Add("Active");
-            foreach (Student student in students)
+            try
             {
-                DataRow dr = dt.NewRow();
-                dr["ID"] = student.Id;
-                dr["Name"] = student.Name;
-                dr["Gender"] = student.Gender;
-                dr["Major"] = student.Major;
+                Student s = new Student(
+                    Convert.ToInt32(tbID.Text),
+                    tbName.Text.Trim(),
+                    rbMale.Checked,
+                    dtpDOB.Value,
+                    cbMajor.SelectedItem.ToString(),
+                    (int)nudSchoolarship.Value,
+                    cbActive.Checked);
+                return s;
+
+            }catch(FormatException)
+            {
+                MessageBox.Show("Id phai la so nguyen");
             }
-            
-            
+            return null;
         }
 
-        
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            String[] majors = {"SE","IA","GD" };
+            cbMajor.DataSource = majors;
+            dtpDOB.Value = new DateTime(DateTime.Now.Year - 18, 1, 1);
+        }
 
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            Student student = GetStudentInfo();
+            if(student != null)
+            {
+                /*if(dataGridView1 != null)
+                {
+                    dataGridView1.Rows.Add(student);
+                }*/
+                students.Add(student);
+                dataGridView1.DataSource = null;
+                dataGridView1.DataSource = students;
+            }
+        }
+
+        private void btnSaveAs_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.InitialDirectory = @"Documents:\";
+            dialog.DefaultExt = "txt";
+            dialog.Filter = "Text file|*.txt|Csharp File|*.cs";
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                StudentManager.saveToFile(dialog.FileName, students);
+                MessageBox.Show("Ghi du lieu thanh cong");
+            }
+
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.InitialDirectory = @"Documents:\";
+            dialog.DefaultExt = "txt";
+            dialog.Filter = "Text file|*.txt|Csharp File|*.cs";
+            if(dialog.ShowDialog() == DialogResult.OK)
+            {
+                StudentManager.readFromFile(dialog.FileName, dataGridView1,students);
+                MessageBox.Show("Mo file thanh cong");
+            }
+            tbLink.Text = dialog.FileName;
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.FileName = tbLink.Text;
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                StudentManager.saveToFile(dialog.FileName, students);
+                MessageBox.Show("Ghi du lieu thanh cong");
+            }
+        }
     }
 }

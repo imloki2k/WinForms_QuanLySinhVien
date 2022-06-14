@@ -21,7 +21,7 @@ namespace WinForms_QuanLySinhVien
 
         public Boolean Active { get; set; }
 
-        public Student(int id, string name, bool gender, string major, DateTime dOB, decimal schoolarship, bool active)
+        public Student(int id, string name, bool gender, DateTime dOB, string major, decimal schoolarship, bool active)
         {
             Id = id;
             Name = name;
